@@ -1,0 +1,15 @@
+- title: Enclosure
+  link: /enclosure
+  bgcolor: "#43bccc"
+  style: "background: url('/assets/img/enclosure/2.jpg') 50% 75%;background-size: cover;"
+- title: Forage
+  link: /forage
+  bgcolor: "#06d6a0"
+- title: Section
+  link: /section
+  bgcolor: "#cc8943"
+  style: "background: url('/assets/img/section/2.jpg') 50% 90%; background-size: cover;"
+- title: AMS
+  link: /ams
+  bgcolor: "rgb(170, 140, 180)"
+  style: "background: url('/assets/img/ams/1.png') center; background-size: cover;"

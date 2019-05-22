@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<script
+			  src="jquery-1.12.4.min.js"
+			  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+			  crossorigin="anonymous"></script><title>Key Test</title>
+	<script type="text/javascript">
+var imgPin = new Image();		imgPin.src = "pin.png";
+var imgPinGoal = new Image();	imgPinGoal.src = "pin_goal.png";
+var imgPinBonus = new Image();	imgPinBonus.src = "pin_bonus.png";
+var imgMine = new Image();		imgMine.src = "mine.png";
+var imgGoalStar = new Image();	imgGoalStar.src = "goal_star.png";
+
+var sndSwitchDirection = new Audio("switch_direction.wav");
+var sndSkip = new Audio("skip.wav");
+var sndSmack = new Audio("smack.wav");
+var sndLand = new Audio("land.wav");
+var sndBonus = new Audio("bonus.wav");
+var sndWin = new Audio("win.wav");
+var sndDie = new Audio("first_move.wav"); // TODO death sound
+
+var context;
+var canvas;
+var paused = false;
+var lastFrameTime;
+
+var keyDown = [];
+
+var keySwing = 86; // V key
+var keyBounce = 67; // C key
+// swing + bounce = flip
+var keyInstantReverse = 32; // space key
+var keyPause = 80; // P?
+
+var TITLE = 0;
+var LEVEL_SELECT = 1;
+var GAME = 2;
+var currentMode = TITLE;
+
+var titleTimer = 0;
+
+var playerFadeValue = 0;
+var playerFadeSpeed = 1 / 1000; // alpha value per second
+
+var goalAnimationTimer = 0;
+
+var playerX, playerY; // in grid coordinates
+var playerAngle; // in radians
+var playerDirection; // or negative one, unitless
+var playerWidth = 4;
+var playerFill = "rgb(255, 255, 255)";
+var playerStroke = "rgb(100, 100, 100)";
+var lives = 3;
+var score = 0;
+
+var pinSpacing = 40;
+
+var marginX, marginY;
+var tutorialX, tutorialY;
+
+var startX, startY;
+var startAngle = 3 * Math.PI / 2;
+var startDirection = 1;
+
+var PIN_EMPTY = 0;
+var PIN_NEUTRAL = 1;
+var PIN_GOAL = 2;
+var PIN_BONUS = 3;
+var PIN_START = 4;
+
+var currentLevel;
+
+var levels = [
+{
+	name:"Monkey Bars and Swings (Pre-School)",
+	pins:[
+		[4], [1], [1], [1], [1], [2],
+	], tutorial:"Hold down [V] to swing from one pin to the next. Grab the flashing pin.",
+},
+{
+	name:"Bouncin' Around (Elementary)",
+	pins:[
+		[0, 4],
+		[0, 1],
+		[1, 1],
+		[0, 2],
+	], mines:[
+		[2.5, .5],
+	], tutorial:"Hold down [C] to bounce off of a pin. Don't touch any red mines.",
+},
+{
+	name:"Flipping Out (Junior High)",
+	pins:[
+		[1, 3],
+		[1, 1],
+		[4, 0],
+		[1, 0],
+		[1, 0],
+		[1, 0],
+		[1, 0],
+		[2, 0],
+	], mines:[
+		[3.5, -.5],
+		[4.5, -.5],
+		[5.5, -.5],
+		[6.5, -.5],
+	], tutorial:"Hold down both [V] and [C] to flip across pins. Grab the dark pins for bonus points.",
+},
+{
+	name:"To [C], or not to [C] (High School)",
+	pins:[
+		[4],
+		[1],
+		[1],
+		[1],
+		[1],
+		[1],
+		[1],
+		[2],
+	], mines:[
+		[1, .5],
+		[2, -.5],
+		[3, -.5],
+		[4, .5],
+		[4.5, .0625],
+		[5.5, .0625],
+	], tutorial:"The difference between swinging (V) and flipping (V+C) is important for a surgeon.",
+},
+{
+	name:"What They Don't Teach You In High School",
+	pins:[
+		[4, 1, 1, 3],
+		[1, 0, 0, 1],
+		[1, 0, 0, 1],
+		[1, 1, 1, 2],
+	], tutorial:"Press [ space ] to change direction instantly. I'm sure that wouldn't have helped or anything.",
+},
+{
+	name:"Taking A Year Off Before Going Back To School (A Taste Of The Real World)",
+	pins:[
+		[1, 1, 1, 3],
+		[1, 4, 1, 1],
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
+		[1, 1, 1, 1],
+		[3, 1, 2, 1],
+	], mines:[
+		[3.875, -.5],
+		[4.125, -.5],
+		[4.5, -.125],
+		[4.5, .125],
+		[3.5, .875],
+		[3.5, 1.125],
+		[3.875, 1.5],
+		[4.125, 1.5],
+		[4.375, 1.5],
+		[4.625, 1.5],
+		[4.875, 1.5],
+		[5.125, 1.5],
+		[3.875, 2.5],
+		[4.125, 2.5],
+		[4.375, 2.5],
+	],
+},
+{
+	name:"Blue-Collar Work (Under Construction)",
+	pins:[
+		[1, 4, 1],
+		[0, 0, 0],
+		[1, 1, 1],
+		[1, 2, 1],
+		[1, 1, 1],
+	], mines:[
+		[0, 3.0625],
+	], tutorial:"That's all for now.",
+},
+];
+
+var pins;
+var mines;
+
+function isKeyDown(keycode) {
+	return keyDown[keycode];
+}
+
+function screenX(x) {
+	return x * pinSpacing + marginX;
+}
+
+function screenY(y) {
+	return y * pinSpacing + marginY;
+}
+
+// not mine
+function normalize( vec ) {
+	var div = Math.sqrt(vec.map(function(x) {return x*x}).reduce(function(a,b) {return a+b}));
+	return vec.map(function(x) {return x == 0 ? 0 : x/div});
+}
+
+function switchDirection() {
+	playerDirection = playerDirection == 1 ? -1 : 1;
+}
+
+function pinAt(x, y) {
+	if (Number.isInteger(x) && Number.isInteger(y) && x >= 0 && y >= 0 && x < pins.length && y < pins[0].length) return pins[x][y];
+	return PIN_EMPTY;
+}
+
+function canLand(x, y) {
+	return pinAt(x, y) != PIN_EMPTY;
+}
+
+function getPlayerAngVel() {
+	if (currentLevel == 6) return 6 / 1000;
+	if (currentLevel == 5) return 2 / 1000;
+	return 1.5 / 1000
+}
+
+function loadLevel(level) {
+	pins = levels[level].pins;
+	mines = levels[level].mines;
+	startX = 1; // default
+	startY = 1; // default
+	for (var x = 0; x < pins.length; x++) {
+		for (var y = 0; y < pins[x].length; y++) {
+			if (pinAt(x, y) == PIN_START) {
+				startX = x;
+				startY = y;
+				break;
+			}
+		}
+	}
+	marginX = (canvas.width - pinSpacing * (pins.length - 1) - imgPin.width) / 2;
+	marginY = (canvas.height - pinSpacing * (pins[0].length - 1) - imgPin.height) / 2;
+	tutorialX = canvas.width / 2;
+	tutorialY = marginY - pinSpacing - 32;
+	currentLevel = level;
+	reset();
+}
+
+function reset() {
+	playerX = startX;
+	playerY = startY;
+	playerAngle = startAngle;
+	playerDirection = startDirection;
+}
+
+function gameOver() {
+	// TODO
+	reset();
+}
+
+function die() {
+	playerFadeValue = 1;
+}
+
+function endLevel() {
+	// TODO
+	if (currentLevel < levels.length - 1) {
+		loadLevel(currentLevel + 1);
+	 } else {
+		 paused = true;
+	 }
+}
+
+function isBetween(angle1, angle2, angle) {
+	return (angle1 >= angle && angle2 <= angle) || (angle1 <= angle && angle2 >= angle);
+}
+
+function update(delta) {
+	if (currentMode == TITLE) {
+		titleTimer += delta;
+	}
+	if (currentMode == GAME) {
+		if (playerFadeValue == 0) { // if not dead
+			goalAnimationTimer += delta;
+			var hitsPin = false;
+			var pinX = -1;
+			var pinY = -1;
+
+			var oldPlayerAngle = playerAngle;
+			playerAngle += playerDirection * getPlayerAngVel() * delta;
+
+			if (isBetween(oldPlayerAngle, playerAngle, Math.PI * 2) || isBetween(oldPlayerAngle, playerAngle, 0)) {
+				hitsPin = true;
+				pinX = playerX + 1;
+				pinY = playerY;
+			}
+
+			// determine if hits pin
+			if (!hitsPin) {
+				if (isBetween(oldPlayerAngle, playerAngle, Math.PI / 2)) {
+					hitsPin = true;
+					pinX = playerX;
+					pinY = playerY + 1;
+				} else if (isBetween(oldPlayerAngle, playerAngle, Math.PI)) {
+					hitsPin = true;
+					pinX = playerX - 1;
+					pinY = playerY;
+				} else if (isBetween(oldPlayerAngle, playerAngle, 3 * Math.PI / 2)) {
+					hitsPin = true;
+					pinX = playerX;
+					pinY = playerY - 1;
+				}
+			}
+
+			// check if hits a mine
+			if (mines != undefined) {
+				for (var i = 0; i < mines.length; i++) {
+					var mineRelX = mines[i][0] - playerX;
+					var mineRelY = mines[i][1] - playerY;
+					var mineR = Math.sqrt(Math.pow(mineRelX, 2) + Math.pow(mineRelY, 2));
+					if (mineR <= 1) { // why would we waste time with theta calculations if it's too far away anyways?
+						var mineAngle = Math.atan2(mineRelY, mineRelX);
+						if (mineAngle < 0) mineAngle += Math.PI * 2;
+						if (isBetween(oldPlayerAngle, playerAngle, mineAngle)) {
+							// TODO we hit the mine
+							playerAngle = mineAngle; // graphical embellishment
+							sndDie.play();
+							die();
+							return; //TODO is this necessary?
+						}
+					}
+				}
+			}
+
+			// jump, swing, bounce, etc.
+			// this comes after the checks because it alters playerAngle
+			if (hitsPin) {
+				// does it pass a pin?
+				if (isKeyDown(keySwing)) {
+					if (canLand(pinX, pinY)) {
+						playerX = pinX;
+						playerY = pinY;
+						if (!isKeyDown(keyBounce)) {
+							switchDirection();
+							playerAngle = oldPlayerAngle - (playerAngle - playerAngle);
+						}
+						playerAngle += playerAngle > Math.PI ? - Math.PI : Math.PI;
+						// Landed! play various sounds and add points or whatever
+						switch (pinAt(pinX, pinY)) {
+							case PIN_BONUS: //bonus
+								sndBonus.play();
+								pins[pinX][pinY] = 1; // not a bonus anymore
+								score += 1000;
+								// TODO trigger animation?
+								break;
+							case PIN_GOAL: //goal
+								endLevel();
+								sndWin.play();
+								break;
+							default:
+								sndLand.play();
+								break;
+						}
+					}
+				} else if (isKeyDown(keyBounce)) {
+					if (canLand(pinX, pinY)) {
+						switchDirection();
+						playerAngle = oldPlayerAngle - (playerAngle - playerAngle);
+						// TODO play sound
+					}
+				} else {
+					if (canLand(pinX, pinY)) {
+						// skipped pin
+						console.log(pinX + ", " + pinY + ", " + pinAt(pinX, pinY));
+						sndSkip.play();
+					}
+				}
+			}
+
+			// calculate wraps
+			// comes after the checks because it alters playerAngle
+			if (playerAngle >= Math.PI * 2) {
+				playerAngle -= Math.PI * 2;
+			}
+			if (playerAngle < 0) {
+				playerAngle += Math.PI * 2;
+			}
+		} else { // if dead
+			playerFadeValue -= playerFadeSpeed * delta;
+			if (playerFadeValue < 0) { 
+				playerFadeValue = 0;
+				if (lives >= 1) {
+					reset();
+					lives--;
+				} else {
+					gameOver();
+				}
+			}
+
+		}
+	}
+}
+
+function drawText(text, x, y) {
+	context.fillStyle = "black";
+	context.fillText(text, x + 1, y + 1);
+	context.fillStyle = "white";
+	context.fillText(text, x, y);
+}
+
+function drawBackground() {
+	context.fillStyle="rgb(170, 140, 180)";
+	context.fillRect(0, 0, 640, 480);
+}
+
+function drawPlayer() {
+	context.save();
+
+	context.translate(screenX(playerX), screenY(playerY)); // TODO
+	context.rotate(playerAngle);
+
+	context.fillStyle = playerFill;
+	context.strokeStyle = playerStroke;
+
+	context.beginPath();
+
+	context.rect(0, 0 - playerWidth / 2, pinSpacing - imgPin.width / 2, playerWidth);
+
+	context.globalAlpha = playerFadeValue == 0 ? 1 : playerFadeValue;
+
+	context.fill();
+
+	context.restore();
+}
+
+function drawNPCs() {
+	// TODO
+}
+
+function drawObstacles() {
+	// right now just mines
+	if (mines != undefined) {
+		for (var i = 0; i < mines.length; i++) {
+			context.drawImage(imgMine, screenX(mines[i][0]) - imgMine.width / 2, screenY(mines[i][1]) - imgMine.height / 2);
+		}
+	}
+}
+
+function drawPins() {
+	for (var x = 0; x < pins.length; x++) {
+		for (var y = 0; y < pins[x].length; y++) {
+			if (pins[x][y] == PIN_NEUTRAL || pins[x][y] == PIN_START)  {
+				context.drawImage(imgPin, screenX(x) - imgPin.width / 2, screenY(y) - imgPin.height / 2);
+			} else if (pins[x][y] == PIN_GOAL) {
+				context.save();
+				context.translate(screenX(x), screenY(y));
+				context.scale(Math.sin(goalAnimationTimer / 100) / 8 + 7/8, Math.sin(goalAnimationTimer / 100) / 8 + 7/8);
+				context.rotate(goalAnimationTimer / 600);
+				context.drawImage(imgGoalStar, -imgGoalStar.width / 2, -imgGoalStar.height / 2);
+				context.restore();
+				//context.drawImage(imgPinGoal, screenX(x) - imgPinGoal.width / 2, screenY(y) - imgPinGoal.height / 2);
+				context.drawImage(imgPin, screenX(x) - imgPin.width / 2, screenY(y) - imgPin.height / 2);
+			} else if (pins[x][y] == PIN_BONUS) {
+				context.drawImage(imgPinBonus, screenX(x) - imgPinBonus.width / 2, screenY(y) - imgPinBonus.height / 2);
+			}
+		}
+	}
+	if (levels[currentLevel].tutorial != undefined) {
+		context.save();
+		context.font = "bold 8pt sans-serif";
+		context.textAlign = "center";
+		drawText(levels[currentLevel].tutorial, tutorialX, tutorialY);
+		context.restore();
+	}
+}
+
+function drawHUD() {
+	context.font = "bold 8pt sans-serif";
+	context.fillStyle = "black";
+	y = 6;
+	yoffset = 12;
+	drawText((levels[currentLevel].tutorial == undefined ? "Level " : "Tutorial Level " )+ currentLevel + ": " + levels[currentLevel].name, 10, y += yoffset);
+	drawText("Score: " + score, 10, y += yoffset);
+	drawText("Lives: " + lives, 10, y += yoffset);
+}
+
+function render() {
+	if (currentMode == TITLE) {
+		drawBackground();
+		context.save();
+		context.font = "bold 24pt sans-serif";
+		context.textAlign = "center";
+		context.fillStyle = "black";
+		drawText("Angular Momentum Surgeon", canvas.width/2, canvas.height/2 - 100);
+		context.font = "bold italic 24pt sans-serif";
+		drawText("(Demo)", canvas.width/2, canvas.height/2 - 60);
+		context.font = "8pt sans-serif";
+		drawText("Press any key to begin", canvas.width/2, canvas.height/2 + 100);
+		context.restore();
+	}
+	if (currentMode == LEVEL_SELECT) {
+		drawBackground();
+		// menus etc
+	}
+	if (currentMode == GAME) {
+		drawBackground();
+		drawObstacles();
+		drawPlayer();
+		drawNPCs();
+		drawPins();
+		drawHUD();
+	}
+}
+
+function frame() {
+	var delta = Date.now() - lastFrameTime;
+	if (!paused) {
+		update(delta);
+	}
+	render();
+	lastFrameTime = Date.now();
+	window.requestAnimationFrame(frame);
+}
+
+function initialize() {
+	canvas = document.getElementById("myCanvas");
+	context = canvas.getContext("2d");
+	lastFrameTime = Date.now();
+	window.requestAnimationFrame(frame);
+}
+
+$(document).keydown(function(event) {
+	var keycode = event.keyCode ? event.keyCode : event.which;
+	keyDown[keycode] = true;
+	if (currentMode == GAME) {
+		if (!paused && playerFadeValue == 0) {
+			if (keycode == keyInstantReverse && currentLevel > 3) { // spacebar bouncing disabled until level 4
+				switchDirection();
+				sndSwitchDirection.play();
+			}
+		}
+		if (keycode == keyPause) {
+			paused = !paused;
+		}
+		if (keycode == 107) loadLevel(currentLevel + 1); // TODO remove, debug only
+		if (keycode == 109) loadLevel(currentLevel - 1); // TODO remove, debug only
+	} else if (currentMode == TITLE) {
+		// TODO debug only
+		loadLevel(0);
+		currentMode = GAME;
+	}
+});
+
+$(document).keyup(function(event) {
+	var keycode = event.keyCode ? event.keyCode : event.which;
+	keyDown[keycode] = false;
+});
+	</script>
+</head>
+<body onload="initialize();">
+	<canvas id="myCanvas" width="640" height="480" style="border: 1px solid black;"/>
+	<p id="debug">aasd</p>
+</body>
+</html>

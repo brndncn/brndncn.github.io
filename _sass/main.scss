@@ -1,0 +1,160 @@
+$foreground: #000000;
+/*$background: #fbae17;*/
+$background: #e4e6dd;
+$logoheight: 96px;
+
+@import 'avant-garde-gothic';
+@import url('https://rsms.me/inter/inter.css');
+/* html { font-family: 'Inter UI', sans-serif; }
+@supports (font-variation-settings: normal) {
+  html { font-family: 'Inter UI var alt', sans-serif; }
+} */
+
+body {
+	padding: 0;
+	margin: 0;
+	background-color: black;
+	color: $foreground;
+	font-size: 20px;
+	font-family: 'Inter UI', 'Helvetica Neue', 'Helvetica', sans-serif;
+	font-weight: 400;
+}
+
+.everything {
+	max-width: 1120px;
+	margin: auto;
+	background-color: black;
+}
+
+.layout_block {
+	background-color: $background;
+	margin-top: 24px;
+	margin-bottom: 24px;
+	padding: 24px;
+}
+
+a {
+	color: inherit;
+	font-weight: bold;
+}
+
+.main {
+}
+
+.header {
+	a {
+		margin: 0;
+		padding: 0;
+	}
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 32px;
+	/*padding-bottom: 1.5em;*/
+	/*position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;*/
+	nav {
+		font-family: 'ITC Avant Garde Gothic Std Demi';
+		/*margin: 0 0.2em;*/
+		min-height: $logoheight;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-end;
+		align-items: center;
+		a {
+			margin: 18px;
+			text-decoration: none;
+			color: $foreground;
+			position: relative;
+		}
+		a.current:after {
+			content: '';
+			position: absolute;
+			bottom: -4px;
+			left: 0;
+			right: 0;
+			height: 4px;
+			background-color: $foreground;
+		}
+	}
+
+	img.logo {
+		height: $logoheight;
+	}
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	font-family: 'ITC Avant Garde Gothic Std Demi';
+}
+
+h1 {
+	font-size: 32px;
+}
+
+p {
+	margin-top: 0;
+}
+
+.frontpage {
+	padding: 0;
+	min-height: 288px;
+	position: relative;
+}
+
+.frontpage_title {
+	color: #ffffff;
+	font-size: 48px;
+	position: absolute;
+	bottom: 0;
+	padding: 24px;
+	padding-bottom: 12px;
+}
+
+.about_me {
+	padding: 24px;
+	padding-left: 360px;
+}
+
+.frontpage_header {
+	min-height: 288px;
+	width:100%;
+	margin: 0;
+	position: relative;
+}
+
+.frontpage_details {
+	overflow: hidden;
+	max-height: 0;
+	padding: 24px;
+	padding-top: 0;
+	padding-bottom: 0;
+	transition: max-height 0.2s linear, padding-top 0.2s linear, padding-bottom 0.2s linear;
+}
+
+.frontpage:nth-child(odd)  .frontpage_title {
+	left: 0;
+	text-align: left;
+}
+
+.frontpage:nth-child(even)  .frontpage_title {
+	left: auto;
+	right: 0;
+	text-align: right;
+}
+
+.noise {
+	color: $background;
+	font-family: 'ITC Avant Garde Gothic Std Demi';
+}
+
+.playbutton {
+	margin-right:12px;
+}
+
+.length {
+	float: right;
+}

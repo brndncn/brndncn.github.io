@@ -1,0 +1,123 @@
+---
+layout: none
+---
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Brandon Canfield</title>
+		<link rel="stylesheet" href="/assets/css/styles.css"/>
+		<script type="text/javascript" src="/assets/js/jquery-3.3.1.min.js"></script>
+		<!--
+		<script type="text/javascript" src="/assets/js/jquery.smoothState.min.js"></script>
+		-->
+		<script type="text/javascript">
+var current_expanded = "";
+function toggle(selector) {
+	if (current_expanded !== "") {
+		let elt = $(current_expanded);
+		elt.css("max-height", "0");
+		elt.css("padding-top", "0");
+		elt.css("padding-bottom", "0");
+	}
+	if (current_expanded !== selector) {
+		let elt = $(selector);
+		elt.css("max-height", "800px");
+		elt.css("padding-top", "24px");
+		elt.css("padding-bottom", "24px");
+		current_expanded = selector;
+	} else {
+		current_expanded = "";
+	}
+}
+		</script>
+	</head>
+	<body>
+		<div class="everything">
+			<div class="layout_block header">
+				{% include logo.html %}
+				{% include navigation.html %}
+			</div>
+
+			<div class="layout_block frontpage about_me" style="background: #e4e6dd url('/assets/img/about_me.jpg') no-repeat 0% 30%; background-size: 336px auto;">
+				<h1 class="frontpage_title" style="color: black;">
+					ABOUT ME
+				</h1>
+				{% capture about_me %}{% include about_me.md %}{% endcapture %}
+				{{ about_me | markdownify }}
+			</div>
+
+			<div class="layout_block frontpage">
+				<div class="frontpage_header" style="background: url('/assets/img/enclosure/2.jpg') 50% 75%;background-size: cover;" onclick="toggle('#details_enclosure');">
+					<h1 class="frontpage_title" style="">
+						ARCH: ENCLOSURE
+					</h1>
+				</div>
+				<div id="details_enclosure" class="frontpage_details">
+					<p>
+					This project was a collaboration with Journey Streams and Gema Martinez for the course <i>Scales of Design</i>.
+					Our task was to design an &#x201C;enclosure for the human&#x201D;.
+					</p>
+					<p>
+					&#x201C;Our enclosure is both physical and psychological.
+					Two mirrors redirect the wearer’s line of vision so they only see their periphery.
+					In this sense, the wearer is only aware of where they aren’t.
+					</p><p>
+					&#x201C;Each step forward becomes a step into the invisible.
+					Auditory perception is also distorted, as the reverberation in the enclosure relocates incoming sound.
+					The experience is isolatory, but also forces dependency on those nearby for the wearer to navigate safely through space.
+					This sensory distortion is conveyed to the outside viewer through the warped mirror surface that refracts one’s surroundings, perplexing and unsettling even those who are not wearing it.&#x201D;
+					</p>
+				</div>
+			</div>
+
+			<div class="layout_block frontpage">
+				<div class="frontpage_header" style="background-color: #06d6a0;" onclick="toggle('#details_forage');">
+					<h1 class="frontpage_title" style="">
+						UX: FORAGE
+					</h1>
+				</div>
+				<div id="details_forage" class="frontpage_details">
+					<p>
+					<i>Forage</i> is a final project for the course <i>Human-Computer Interaction</i>.
+					It is a design for a mobile app that reduces food waste by enabling single adults to cook and eat meals in groups.
+					It won Best Poster Presentation, awarded by a team of faculty judges.
+					This project was a collaboration with Jessica Ambrosio, Viola Mocz, and Alice Wu.
+					</p>
+					<p>
+					You can view the poster <a href="/assets/pdf/forage.pdf">here</a>.
+					</p>
+				</div>
+			</div>
+<!--
+			<div class="layout_block frontpage">
+				<div class="frontpage_header" style="background: url('/assets/img/section/2.jpg') 50% 100%; background-size: cover;" onclick="toggle('#details_section');">
+					<h1 class="frontpage_title" style="">
+						SECTION
+					</h1>
+				</div>
+				<div id="details_section" class="frontpage_details">
+					
+				</div>
+			</div>
+-->
+			<div class="layout_block frontpage">
+				<div class="frontpage_header" style="background: url('/assets/img/ams/1.png') center; background-size: cover;" onclick="toggle('#details_ams');">
+					<h1 class="frontpage_title" style="">
+						CODE: AMS
+					</h1>
+				</div>
+				<div id="details_ams" class="frontpage_details">
+					<p>
+					<i>Angular Momentum Surgeon</i> is a JavaScript and Canvas game heavily inspired by the classic 1994 Macintosh game <i>Spin Doctor</i>.
+					I completed it in 2017 for a high school project.
+					The original files for the game were lost, but I found a partial backup of the game with the tutorials and one level.
+					</p>
+					<p>
+					You can play the old version of the game <a href="/ams_backup/angular_momentum_surgeon.html">here</a>.
+					</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

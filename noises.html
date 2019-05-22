@@ -1,0 +1,21 @@
+---
+title: Noises
+layout: blank
+---
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+<div class="layout_block">
+	<h1>EXPERIMENTAL IMPROVISATIONS</h1>
+	<p>
+	I enjoy improvising experimental electronic music.
+	The tracks below are all rough-cut improvisations.
+	Some I recorded myself and others feature other musicians.
+	</p>
+</div>
+{% for noise in site.data.noises %}
+<div class="layout_block noise" style="background-color: {{ noise.bgcolor }};">
+	<audio id="aud{{ forloop.index }}" src="/assets/music/{{ noise.src }}"></audio>
+	<i id="play{{ forloop.index }}" class="playbutton fas fa-play"></i>
+	{{ noise.date }}
+	<span class="length">6:00</span>
+</div>
+{% endfor %}
