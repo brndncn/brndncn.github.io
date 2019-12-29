@@ -45,7 +45,28 @@ function toggle(selector) {
 				{% capture about_me %}{% include about_me.md %}{% endcapture %}
 				{{ about_me | markdownify }}
 			</div>
-
+			
+			<div class="layout_block frontpage">
+				<div class="frontpage_header" style="background: url('/assets/img/helical_scan_2019.jpg') 50% 33%;background-size: cover;" onclick="toggle('#details_helical_scan_2019');">
+					<h1 class="frontpage_title" style="">
+						INSTALLATION: HELICAL SCAN (2019)
+					</h1>
+				</div>
+				<div id="details_helical_scan_2019" class="frontpage_details">
+					<p>
+					<i>Helical Scan</i> was a sculptural installation at Yale University exploring the technical possibilities of looping VHS tapes as well as the artistic possibilities of a video medium that self-destructs over time.
+					</p>
+					<p><b>Installation Notes:</b>
+					Looping magnetic tapes of audio information is a well-established artistic practice.
+					Looping magnetic tapes of video is substantially less explored.
+					This project explores the technical and artistic possibilities of using VHS tape and VCRs themselves as a medium.
+					</p>
+					<p>
+					This project was funded by a Yale College Creative and Performing Arts award.
+					</p>
+				</div>
+			</div>
+			
 			<div class="layout_block frontpage">
 				<div class="frontpage_header" style="background: url('/assets/img/omi_concert_spring_2019.jpg') 50% 33%;background-size: cover;" onclick="toggle('#details_omi_spring_2019');">
 					<h1 class="frontpage_title" style="">
@@ -69,19 +90,26 @@ function toggle(selector) {
 			</div>
 
 			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background: #f9f93e;" onclick="toggle('#details_omi_synth_jam');">
-					<h1 class="frontpage_title" style="color: #000000;">
-						SOUND: OMI SYNTH JAM
+				<div class="frontpage_header" style="background: url('/assets/img/omi_concert_spring_2019.jpg') 50% 33%;background-size: cover;" onclick="toggle('#details_omi_spring_2019');">
+					<h1 class="frontpage_title" style="">
+						SOUND: VOICE DREAM
 					</h1>
 				</div>
-				<div id="details_omi_synth_jam" class="frontpage_details" style="background: #f9f93e;">
+				<div id="details_omi_spring_2019" class="frontpage_details">
 					<p>
-					Here's a link to <a href="https://omi.yale.edu/news/synth-jam-report" target="_blank">an improvised group synth jam</a> I participated in with other members of the Open Music Initiative.
-					It's very long, so if you must skim, my favorite part is around 25:00-26:00.
+					This piece was a collaboration with Thomas Hagen for the Yale Open Music Initiative concert (spring 2019).
+					</p>
+					<p><b>Program Notes:</b>
+					&#x201C;<i>Voice Dream</i> is an improvised ambient piece.
+					Vocal tones were recorded up close, looped, and fed through filters and delay lines.
+					These drones are overlaid with percussive samples similarly sent through delay lines with automated changes in delay time, distorting the sounds as they are replayed.&#x201D;
+					</p>
+					<p>
+					You can watch the entire concert <a href="https://www.youtube.com/watch?v=ac0GrSG5IKU" target="_blank">here</a>.
+					<i>Voice Dream</i> starts at approximately 9:05.
 					</p>
 				</div>
 			</div>
-
 
 			<div class="layout_block frontpage">
 				<div class="frontpage_header" style="background: #b23cac;" onclick="toggle('#details_summer_2019');">
