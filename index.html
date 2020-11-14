@@ -34,17 +34,6 @@ function toggle(selector) {
 	</head>
 	<body>
 		<div class="everything">
-			<div class="layout_block header">
-				{% include logo.html %}
-			</div>
-
-			<div class="layout_block frontpage about_me" style="background: #e4e6dd url('/assets/img/about_me.jpg') no-repeat 0% 30%; background-size: 336px auto;">
-				<h1 class="frontpage_title" style="color: black;">
-					ABOUT ME
-				</h1>
-				{% capture about_me %}{% include about_me.md %}{% endcapture %}
-				{{ about_me | markdownify }}
-			</div>
 			
 			<div class="layout_block frontpage">
 				<div class="frontpage_header" style="background: url('/assets/img/helical_scan_2019.jpg') 0% 50%;background-size: cover;" onclick="toggle('#details_helical_scan_2019');">
@@ -115,23 +104,6 @@ function toggle(selector) {
 			</div>
 
 			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background: #b23cac;" onclick="toggle('#details_summer_2019');">
-					<h1 class="frontpage_title" style="">
-						WATCH WHAT I DO... BUT NOT TOO CLOSELY
-					</h1>
-				</div>
-				<div id="details_summer_2019" class="frontpage_details">
-					<p>
-					I spent a summer at the Carnegie Mellon School of Computer Science working in the Institute for Software Research and the Human Computer Interaction Institute with Toby Jia-Jun Li and Brad A. Myers.
-					My research was focused on preserving privacy while sharing GUI-based programming-by-demonstration scripts.
-					</p>
-					<p>
-					You can view the end-of-program poster <a href="/assets/pdf/summer_2019_poster.pdf">here</a>.
-					</p>
-				</div>
-			</div>
-
-			<div class="layout_block frontpage">
 				<div class="frontpage_header" style="background: url('/assets/img/enclosure/frontpage.jpg') 50% 75%;background-size: cover;" onclick="toggle('#details_enclosure');">
 					<h1 class="frontpage_title" style="">
 						ENCLOSURE
@@ -174,25 +146,6 @@ function toggle(selector) {
 					You can view the source of Radione on <a href="https://github.com/brndncn/radi.one">GitHub</a>. 
 					A Heroku instance of Radione runs at <a href="http://radi.one/">radi.one</a>.
 					A screenshot of Radione can be seen <a href="/assets/img/radione.png">here</a>.
-					</p>
-				</div>
-			</div>
-
-			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background-color: #06d6a0;" onclick="toggle('#details_forage');">
-					<h1 class="frontpage_title" style="">
-						FORAGE
-					</h1>
-				</div>
-				<div id="details_forage" class="frontpage_details">
-					<p>
-					<i>Forage</i> is a final project for the course <i>Human-Computer Interaction</i>.
-					It is a design for a mobile app that reduces food waste by enabling single adults to cook and eat meals in groups.
-					It won Best Poster Presentation, awarded by a team of faculty judges.
-					This project was a collaboration with Jessica Ambrosio, Viola Mocz, and Alice Wu.
-					</p>
-					<p>
-					You can view the poster <a href="/assets/pdf/forage.pdf">here</a>.
 					</p>
 				</div>
 			</div>
