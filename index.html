@@ -3,169 +3,306 @@ layout: none
 ---
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8"/>
-		<title>Brandon Canfield</title>
-		<link rel="stylesheet" href="/assets/css/styles.css"/>
-		<script type="text/javascript" src="/assets/js/jquery-3.3.1.min.js"></script>
-		<!--
-		<script type="text/javascript" src="/assets/js/jquery.smoothState.min.js"></script>
-		-->
-		<script type="text/javascript">
-var current_expanded = "";
-function toggle(selector) {
-	if (current_expanded !== "") {
-		let elt = $(current_expanded);
-		elt.css("max-height", "0");
-		elt.css("padding-top", "0");
-		elt.css("padding-bottom", "0");
-	}
-	if (current_expanded !== selector) {
-		let elt = $(selector);
-		elt.css("max-height", "800px");
-		elt.css("padding-top", "24px");
-		elt.css("padding-bottom", "24px");
-		current_expanded = selector;
-	} else {
-		current_expanded = "";
-	}
-}
-		</script>
-	</head>
-	<body>
-		<div class="everything">
-			
-			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background: url('/assets/img/helical_scan_2019.jpg') 0% 50%;background-size: cover;" onclick="toggle('#details_helical_scan_2019');">
-					<h1 class="frontpage_title" style="">
-						HELICAL SCAN
-					</h1>
-				</div>
-				<div id="details_helical_scan_2019" class="frontpage_details">
-					<p>
-					    <i>Helical Scan</i> was a sculptural installation at Yale University (November 2019, January 2020) exploring the technical possibilities of looping VHS tapes as well as the artistic possibilities of a living visual medium that decays over time.
-					    You can watch video of <i>Helical Scan</i> <a href="https://www.youtube.com/watch?v=lyPkuYn_Hpc&list=PLLPH6m6OeqGLP2vnrkYc_Rj93fe-F3jVT&index=2">here</a>.
-					</p>
-          <p class="embed">
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/lyPkuYn_Hpc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-					</p>
-					<p><b>Installation Notes:</b>
-					Looping magnetic tapes of audio information is a well-established artistic practice.
-					Looping magnetic tapes of video is substantially less explored.
-					This project explores the technical and artistic possibilities of using VHS tape and VCRs themselves as a medium.
-					</p>
-					<p>
-					This project was funded by a Yale College Creative and Performing Arts award.
-					</p>
-				</div>
-			</div>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Brandon Canfield</title>
+        <link rel="stylesheet" href="/assets/css/styles.css"/>
+        <script type="text/javascript" src="/assets/js/jquery-3.3.1.min.js"></script>
+        <!--
+             <script type="text/javascript" src="/assets/js/jquery.smoothState.min.js"></script>
+        -->
+        <script type="text/javascript">
+         var current_expanded = "";
+         function toggle(selector) {
+             if (current_expanded !== "") {
+                 let elt = $('#clipper_' + current_expanded);
+                 elt.css("max-height", "0");
+                 elt.css("padding-top", "0");
+                 elt.css("padding-bottom", "0");
+             }
+             if (current_expanded !== selector) {
+                 let elt = $('#clipper_' + selector);
+                 let det = $('#details_' + selector)[0];
+                 let height = det.clientHeight;
+                 elt.css("max-height", height + "px");
+                 elt.css("padding-top", "24px");
+                 elt.css("padding-bottom", "24px");
+                 current_expanded = selector;
+             } else {
+                 current_expanded = "";
+             }
+         }
+         window.addEventListener('resize', function(event) {
+             if (current_expanded !== "") {
+                 let elt = $('#clipper_' + current_expanded);
+                 let det = $('#details_' + current_expanded)[0];
+                 let height = det.clientHeight;
+                 elt.css("max-height", height + "px");
+                 elt.css("padding-top", "24px");
+                 elt.css("padding-bottom", "24px");
+             }
+         });
+        </script>
+    </head>
+    <body>
+        <div class="everything">
+            
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/robo_arm_a.jpg') 50% 80%;background-size: contain;" onclick="toggle('robo_arm');">
+                    <h1 class="frontpage_title" style="">
+                        ROBO ARM
+                    </h1>
+                </div>
+                <div id="clipper_robo_arm" class="clipper">
+                    <div id="details_robo_arm" class="frontpage_details">
+                        <p>
+                            This project is a small three-axis phi-theta-z robot arm, designed from scratch as an exercise in building a mechatronic system.
+                            The arm is moved by three stepper motors controlled by a Teensy microcontroller.
+                        </p>
+                        <p class="embed">
+                            <iframe title="vimeo-player" src="https://player.vimeo.com/video/811885397" width="540" height="960" frameborder="0"    allowfullscreen></iframe>
+                        </p>
+                        <p>
+                            Ultimately, the mechanical design of the arm didn't allow as fine of control over position as I would have liked, and I hope to build a mk ii at some point in the future.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/thesis_spring_a.jpg') 50% 0%;background-size: cover;" onclick="toggle('thesis_spring');">
+                    <h1 class="frontpage_title" style="color:white;mix-blend-mode: difference;">
+                        VR EP
+                    </h1>
+                </div>
+                <div id="clipper_thesis_spring" class="clipper">
+                    <div id="details_thesis_spring" class="frontpage_details">
+                        <p>
+                            This is a three track immersive EP, designed to be viewed in virtual reality.
+                            Visuals were inspired by musings on visual noise.
+                        </p>
+                        <p class="embed">
+                            <iframe src="https://player.vimeo.com/video/551333504" width="640" height="274" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; gyroscope; accelerometer" allowfullscreen></iframe>
+                            <iframe src="https://player.vimeo.com/video/551334146" width="640" height="274" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; gyroscope; accelerometer" allowfullscreen></iframe>
+                            <iframe src="https://player.vimeo.com/video/551337384" width="640" height="274" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; gyroscope; accelerometer" allowfullscreen></iframe>
+                        </p>
+                        <p>
+                            The immersive component of this project was written in Unity and is partially procedurally generated.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/thesis_fall.png') 30% 50%;background-size: cover;" onclick="toggle('thesis_fall');">
+                    <h1 class="frontpage_title" style="">
+                        IMMERSIVE MUSICAL EXPERIENCES
+                    </h1>
+                </div>
+                <div id="clipper_thesis_fall" class="clipper">
+                    <div id="details_thesis_fall" class="frontpage_details">
+                        <p>
+                            This project is a collection of tools and a proposed architecture for creating immersive musical experiences in Unity.
+                            The tools facilitate the creation of metrically synchronized visuals by providing easy access to musical metric information from arbitrary scripts, shaders, post-processing "volumes", and animations.
+                            This allows creators the ability to focus on content while abstracting away the details of metric synchronization.
 
-			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background: url('/assets/img/431_project.jpg') 50% 67%;background-size: cover;" onclick="toggle('#details_431_project');">
-					<h1 class="frontpage_title" style="">
-						CO-IMPROVISER
-					</h1>
-				</div>
-				<div id="details_431_project" class="frontpage_details">
-					<p>
-					I created a computer co-improviser as a final project for the course <i>Algorithmic Composition</i>.
-					The program records melodies inputted as MIDI in real-time, performs a brief analysis, and then tries to generate new material.
-					</p>
-          <p class="embed">
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/9_eMxcfKUo0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-					</p>
-					<p>
-					You can watch a demo of the project <a href="https://www.youtube.com/watch?v=9_eMxcfKUo0">here</a>.
-					</p>
-				</div>
-			</div>
+                            You can watch video description of this project <a href="https://www.youtube.com/watch?v=uaIuuX8E1N0">here</a>.
+                        </p>
+                        <p class="embed">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/uaIuuX8E1N0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </p>
+                        <p>
+                            While the tools have been developed for a specific kind of immersive experience, the architecture of the system is flexible and can be easily modified to accommodate other artistic possibilities.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/synth_museum.png') 50% 100%;background-size: cover;" onclick="toggle('synth_museum');">
+                    <h1 class="frontpage_title" style="">
+                        SUBTRACTIVE SYNTHESIS MUSEUM
+                    </h1>
+                </div>
+                <div id="clipper_synth_museum" class="clipper">
+                    <div id="details_synth_museum" class="frontpage_details">
+                        <p>
+                            The <i>Subtractice Synthesis Museum</i> was an AltspaceVR mini-museum teaching fundamentals of subtractive synthesis to listeners of electronic music.
+                            The project explores how virtual reality can be used to leverage spatial elements, such as those of a museum, for pedagogical purposes, without incurring the costs of using a physical space.
+                        </p>
+                        <!-- TODO add the rest -->
+                        <p class="embed">
+                            <iframe src="https://player.vimeo.com/video/811815849?h=2b6bb0e5d3" width="640" height="640" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                        </p>
+                        <p>
+                            AltspaceVR was chosen as the environment for this project, as it allowed the museum to be widely accessible (until Altspace's March 2023 shutdown).
+                            AltspaceVR places limitations on the interactive capabilities of its spaces.
+                            I'm excited to see how even more interactive spaces would serve as even better pedagogical tools.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background: url('/assets/img/omi_concert_spring_2019.jpg') 50% 33%;background-size: cover;" onclick="toggle('#details_omi_spring_2019');">
-					<h1 class="frontpage_title" style="">
-						VOICE DREAM
-					</h1>
-				</div>
-				<div id="details_omi_spring_2019" class="frontpage_details">
-					<p>
-					This piece was a collaboration with Thomas Hagen for the Yale Open Music Initiative concert (spring 2019).
-					</p>
-					<p><b>Program Notes:</b>
-					&#x201C;<i>Voice Dream</i> is an improvised ambient piece.
-					Vocal tones were recorded up close, looped, and fed through filters and delay lines.
-					These drones are overlaid with percussive samples similarly sent through delay lines with automated changes in delay time, distorting the sounds as they are replayed.&#x201D;
-					</p>
-					<p>
-					You can watch the entire concert <a href="https://www.youtube.com/watch?v=ac0GrSG5IKU" target="_blank">here</a>.
-					<i>Voice Dream</i> starts at approximately 9:05.
-					</p>
-				</div>
-			</div>
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/roborepair.png') 50% 40%;background-size: cover;" onclick="toggle('roborepair');">
+                    <h1 class="frontpage_title" style="">
+                        ROBOREPAIR!
+                    </h1>
+                </div>
+                <div id="clipper_roborepair" class="clipper">
+                    <div id="details_roborepair" class="frontpage_details">
+                        <p>
+                            <i>RoboRepair!</i> was my entry for the <a href="https://ldjam.com/events/ludum-dare/rules">Ludum Dare 46 compo</a>, a game jam where one builds a game from scratch in 48 hours.
+                            It was written in JavaScript using <a href="https://threejs.org/">three.js</a>.
+                        </p>
+                        <p>
+                            You can play the game <a href="https://brndncn.itch.io/roborepair">here</a>, view the source code <a href="https://github.com/brndncn/ld46">here</a>, and see the entry in LD46 <a href="https://ldjam.com/events/ludum-dare/46/roborepair">here</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background: url('/assets/img/enclosure/frontpage.jpg') 50% 75%;background-size: cover;" onclick="toggle('#details_enclosure');">
-					<h1 class="frontpage_title" style="">
-						ENCLOSURE
-					</h1>
-				</div>
-				<div id="details_enclosure" class="frontpage_details">
-					<p>
-					This project was a collaboration with Journey Streams and Gema Martinez for the course <i>Scales of Design</i>.
-					Our task was to design an &#x201C;enclosure for the human&#x201D;.
-					</p>
-					<p>
-					&#x201C;Our enclosure is both physical and psychological.
-					Two mirrors redirect the wearer’s line of vision so they only see their periphery.
-					In this sense, the wearer is only aware of where they aren’t.
-					</p><p>
-					&#x201C;Each step forward becomes a step into the invisible.
-					Auditory perception is also distorted, as the reverberation in the enclosure relocates incoming sound.
-					The experience is isolatory, but also forces dependency on those nearby for the wearer to navigate safely through space.
-					This sensory distortion is conveyed to the outside viewer through the warped mirror surface that refracts one’s surroundings, perplexing and unsettling even those who are not wearing it.&#x201D;
-					</p>
-					<p>
-					More pictures <a href="/assets/img/enclosure/1.jpg" target="_blank">here</a> and <a href="/assets/img/enclosure/3.jpg" target="_blank">here</a>.
-					</p>
-				</div>
-			</div>
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/helical_scan_2019.jpg') 0% 50%;background-size: cover;" onclick="toggle('helical_scan_2019');">
+                    <h1 class="frontpage_title" style="">
+                        HELICAL SCAN
+                    </h1>
+                </div>
+                <div id="clipper_helical_scan_2019" class="clipper">
+                    <div id="details_helical_scan_2019" class="frontpage_details">
+                        <p>
+                            <i>Helical Scan</i> was a sculptural installation at Yale University (November 2019, January 2020) exploring the technical possibilities of looping VHS tapes as well as the artistic possibilities of a living visual medium that decays over time.
+                            You can watch video of <i>Helical Scan</i> <a href="https://www.youtube.com/watch?v=lyPkuYn_Hpc">here</a>.
+                        </p>
+                        <p class="embed">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/lyPkuYn_Hpc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </p>
+                        <p><b>Installation Notes:</b>
+                            Looping magnetic tapes of audio information is a well-established artistic practice.
+                            Looping magnetic tapes of video is substantially less explored.
+                            This project explores the technical and artistic possibilities of using VHS tape and VCRs themselves as a medium.
+                        </p>
+                        <p>
+                            This project was funded by a Yale College Creative and Performing Arts award.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background: #06a5d6;" onclick="toggle('#details_radione');">
-					<h1 class="frontpage_title" style="">
-						RADIONE
-					</h1>
-				</div>
-				<div id="details_radione" class="frontpage_details">
-					<p>
-					Radione is an art project and experimental messaging service heavily inspired by the nature of conversations on walkie-talkie radios.
-					Conversations on Radione are ephemeral, anonymous, and surveillable.
-					Participants must either understand the flow of conversation well enough or develop a system to explicitly avoid collisions, otherwise, participants may talk over each other, resulting in incomprehensibility.
-					</p>
-					<p>
-					You can view the source of Radione on <a href="https://github.com/brndncn/radi.one">GitHub</a>. 
-					A Heroku instance of Radione runs at <a href="http://radi.one/">radi.one</a>.
-					A screenshot of Radione can be seen <a href="/assets/img/radione.png">here</a>.
-					</p>
-				</div>
-			</div>
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/431_project.jpg') 50% 67%;background-size: cover;" onclick="toggle('431_project');">
+                    <h1 class="frontpage_title" style="">
+                        CO-IMPROVISER
+                    </h1>
+                </div>
+                <div id="clipper_431_project" class="clipper">
+                    <div id="details_431_project" class="frontpage_details">
+                        <p>
+                            I created a computer co-improviser as a final project for the course <i>Algorithmic Composition</i>.
+                            The program records melodies inputted as MIDI in real-time, performs a brief analysis, and then tries to generate new material.
+                        </p>
+                        <p class="embed">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/9_eMxcfKUo0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </p>
+                        <p>
+                            You can watch a demo of the project <a href="https://www.youtube.com/watch?v=9_eMxcfKUo0">here</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-			<div class="layout_block frontpage">
-				<div class="frontpage_header" style="background: url('/assets/img/ams/1.png') center; background-size: cover;" onclick="toggle('#details_ams');">
-					<h1 class="frontpage_title" style="">
-						AMS
-					</h1>
-				</div>
-				<div id="details_ams" class="frontpage_details">
-					<p>
-					<i>Angular Momentum Surgeon</i> is a JavaScript and Canvas game heavily inspired by the classic 1994 Macintosh game <i>Spin Doctor</i>.
-					I completed it in 2017 for a high school project.
-					The original files for the game were lost, but I found a partial backup of the game with the tutorials and one level.
-					</p>
-					<p>
-					You can play the old version of the game <a href="/ams_backup/angular_momentum_surgeon.html">here</a>.
-					</p>
-				</div>
-			</div>
-		</div>
-	</body>
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/omi_concert_spring_2019.jpg') 50% 33%;background-size: cover;" onclick="toggle('omi_spring_2019');">
+                    <h1 class="frontpage_title" style="">
+                        VOICE DREAM
+                    </h1>
+                </div>
+                <div id="clipper_omi_spring_2019" class="clipper">
+                    <div id="details_omi_spring_2019" class="frontpage_details">
+                        <p>
+                            This piece was a collaboration with Thomas Hagen for the Yale Open Music Initiative concert (spring 2019).
+                        </p>
+                        <p><b>Program Notes:</b>
+                            &#x201C;<i>Voice Dream</i> is an improvised ambient piece.
+                            Vocal tones were recorded up close, looped, and fed through filters and delay lines.
+                            These drones are overlaid with percussive samples similarly sent through delay lines with automated changes in delay time, distorting the sounds as they are replayed.&#x201D;
+                        </p>
+                        <p>
+                            You can watch the entire concert <a href="https://www.youtube.com/watch?v=ac0GrSG5IKU" target="_blank">here</a>.
+                            <i>Voice Dream</i> starts at approximately 9:05.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layout_block frontpage">
+                <div class="frontpage_header" style="background: url('/assets/img/enclosure/frontpage.jpg') 50% 75%;background-size: cover;" onclick="toggle('enclosure');">
+                    <h1 class="frontpage_title" style="">
+                        ENCLOSURE
+                    </h1>
+                </div>
+                <div id="clipper_enclosure" class="clipper">
+                    <div id="details_enclosure" class="frontpage_details">
+                        <p>
+                            This project was a collaboration with Journey Streams and Gema Martinez to design an &#x201C;enclosure for the human&#x201D;.
+                        </p>
+                        <p>
+                            &#x201C;Our enclosure is both physical and psychological.
+                            Two mirrors redirect the wearer’s line of vision so they only see their periphery.
+                            In this sense, the wearer is only aware of where they aren’t.
+                        </p><p>
+                            &#x201C;Each step forward becomes a step into the invisible.
+                            Auditory perception is also distorted, as the reverberation in the enclosure relocates incoming sound.
+                            The experience is isolatory, but also forces dependency on those nearby for the wearer to navigate safely through space.
+                            This sensory distortion is conveyed to the outside viewer through the warped mirror surface that refracts one’s surroundings, perplexing and unsettling even those who are not wearing it.&#x201D;
+					              </p>
+					              <p>
+					                  More pictures <a href="/assets/img/enclosure/1.jpg" target="_blank">here</a> and <a href="/assets/img/enclosure/3.jpg" target="_blank">here</a>.
+					              </p>
+				            </div>
+				        </div>
+			      </div>
+
+			      <div class="layout_block frontpage">
+				        <div class="frontpage_header" style="background: #06a5d6;" onclick="toggle('radione');">
+					          <h1 class="frontpage_title" style="">
+						            RADIONE
+					          </h1>
+				        </div>
+                <div id="clipper_radione" class="clipper">
+				            <div id="details_radione" class="frontpage_details">
+					              <p>
+					                  Radione is an art project and experimental messaging service inspired by the nature of conversations on walkie-talkie radios.
+					                  Conversations on Radione are ephemeral, anonymous, and surveillable.
+					                  Participants must either understand the flow of conversation or develop a system to explicitly avoid collisions, otherwise, participants may talk over each other, resulting in incomprehensibility.
+					              </p>
+					              <p>
+					                  You can view the source of Radione on <a href="https://github.com/brndncn/radi.one">GitHub</a>. 
+					                  A Heroku instance of Radione runs at <a href="http://radi.one/">radi.one</a>.
+					                  A screenshot of Radione can be seen <a href="/assets/img/radione.png">here</a>.
+					              </p>
+				            </div>
+				        </div>
+			      </div>
+
+			      <div class="layout_block frontpage">
+				        <div class="frontpage_header" style="background: url('/assets/img/ams/1.png') center; background-size: cover;" onclick="toggle('ams');">
+					          <h1 class="frontpage_title" style="">
+						            AMS
+					          </h1>
+				        </div>
+                <div id="clipper_ams" class="clipper">
+				            <div id="details_ams" class="frontpage_details">
+					              <p>
+					                  <i>Angular Momentum Surgeon</i> is a JavaScript and Canvas game heavily inspired by (read: near clone of) the classic 1994 Macintosh game <i>Spin Doctor</i>.
+					                  I completed it in 2017 for a high school project.
+					                  The original files for the game were lost, but I found a partial backup of the game with the tutorials and one level.
+					              </p>
+					              <p>
+					                  You can play the old version of the game <a href="/ams_backup/angular_momentum_surgeon.html">here</a>.
+					              </p>
+				            </div>
+				        </div>
+			      </div>
+		    </div>
+	  </body>
 </html>
